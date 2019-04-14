@@ -5,16 +5,16 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%auth}}`.
  */
-class m190410_122547_create_auth_table extends Migration
+class m190412_154304_create_auth_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $this->createTable('{{%auth}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
+            'user_id' => $this->bigInteger()->notNull(),
             'source' => $this->string()->notNull(),
             'source_id' => $this->string()->notNull(),
         ]);
@@ -25,7 +25,7 @@ class m190410_122547_create_auth_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%auth}}');
     }

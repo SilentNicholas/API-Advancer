@@ -11,6 +11,7 @@ use app\models\User;
 use Symfony\Component\Console\Tests\Input\ArgvInputTest;
 use Yii;
 use yii\data\Pagination;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -18,6 +19,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\components\AuthHandler;
 
 class SiteController extends Controller
 {
@@ -116,6 +118,10 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function actionView($id)
     {
         $article = Article::findOne($id);
@@ -137,6 +143,10 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function actionCategory($id)
     {
         $data = Category::getArticlesByCategory($id);
@@ -153,56 +163,16 @@ class SiteController extends Controller
         ]);
     }
 
+
     public function onAuthSuccess($client)
     {
-        $attributes = $client->getUserAttributes();
-        /* @var $auth Auth */
-        $auth = Auth::find()->where([
-            'source' => $client->clientId,
-            'source_id' => $attributes['id'],
-        ])->one();
-        if (Yii::$app->user->isGuest) {
-            if ($auth) { // авторизация
-                $user = User::findOne($auth->user_id);
-                Yii::$app->user->login($user);
-            } else {
-                    $user = new User([
-                        'id'=> $attributes['id'],
-                        'name' => $attributes['given_name'],
-                        'email' => $attributes['email'],
-                        'photo' => $attributes['picture'],
-                    ]);
-
-                    $transaction = $user->getDb()->beginTransaction();
-                    if ($user->save()) {
-                        $auth = new Auth([
-                            'user_id' => $user->id,
-                            'source' => $client->clientId,
-                            'source_id' => (string)$attributes['id'],
-                        ]);
-                        if ($auth->save()) {
-                            $transaction->commit();
-                            Yii::$app->user->login($user);
-                        } else {
-                            print_r($auth->getErrors());
-                        }
-                    } else {
-                        print_r($user->getErrors());
-                    }
-                }
-            }
-        else { // Пользователь уже зарегистрирован
-            if (!$auth) { // добавляем внешний сервис аутентификации
-                $auth = new Auth([
-                    'user_id' => Yii::$app->user->id,
-                    'source' => $client->clientId,
-                    'source_id' => $attributes['id'],
-                ]);
-                $auth->save();
-            }
-        }
+        (new AuthHandler($client))->handle();
     }
 
+    /**
+     * @param $id
+     * @return Response
+     */
     public function actionComment($id)
     {
         $model = new CommentForm();

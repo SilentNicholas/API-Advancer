@@ -7,12 +7,21 @@ use yii\web\Controller;
 
 class CommentController extends Controller
 {
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         $comments = Comment::find()->orderBy('id desc')->all();
         return $this->render('index', ['comments'=>$comments]);
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDelete($id)
     {
         $comment = Comment::findOne($id);
@@ -22,6 +31,10 @@ class CommentController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     */
     public function actionAllow($id)
     {
         $comment = Comment::findOne($id);
@@ -30,6 +43,10 @@ class CommentController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     */
     public function actionDisallow($id)
     {
         $comment = Comment::findOne($id);

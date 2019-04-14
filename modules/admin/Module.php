@@ -16,6 +16,9 @@ class Module extends \yii\base\Module
      */
     public $controllerNamespace = 'app\modules\admin\controllers';
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [

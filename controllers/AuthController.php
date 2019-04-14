@@ -7,6 +7,7 @@ use app\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\authclient\OAuth2;
 
 class AuthController extends Controller
 {
@@ -43,6 +44,9 @@ class AuthController extends Controller
         return $this->goHome();
     }
 
+    /**
+     * @return string|Response
+     */
     public function actionSignup()
     {
         $model = new SignupForm();

@@ -3,14 +3,14 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%article}}`.
+ * Handles the creation of table `{{%article_tag}}`.
  */
-class m190401_175251_create_article_tag_table extends Migration
+class m190412_154212_create_article_tag_table extends Migration
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function safeUp()
+    public function up()
     {
         $this->createTable('article_tag', [
             'id' => $this->primaryKey(),
@@ -48,12 +48,11 @@ class m190401_175251_create_article_tag_table extends Migration
             'CASCADE'
         );
     }
-
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function safeDown()
+    public function down()
     {
-        $this->dropTable('{{%article}}');
+        $this->dropTable('article_tag');
     }
 }

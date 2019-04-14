@@ -10,6 +10,9 @@ class SignupForm extends Model
     public $email;
     public $password;
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -20,6 +23,9 @@ class SignupForm extends Model
         ];
     }
 
+    /**
+     * @return bool
+     */
     public function signup()
     {
         $user = new User;

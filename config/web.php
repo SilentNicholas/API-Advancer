@@ -1,5 +1,4 @@
 <?php
-$config = parse_ini_file('../../hello.ini', true);
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -14,6 +13,9 @@ $config = [
     ],
     'components' => [
         'request' => [
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'oCzVfCswxoR6hlYX37FQjYBeW_UOqzo9',
             'baseUrl' => ''
@@ -39,9 +41,10 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            'enableSession' => true,
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['auth/login']
+            'loginUrl' => null //['auth/login']
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -66,10 +69,16 @@ $config = [
 
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user',
+                    'except' => ['create', 'update'],
+                ],
             ],
         ],
 

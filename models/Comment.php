@@ -75,22 +75,35 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
     public function getDate()
     {
         return Yii::$app->formatter->asDate($this->date);
     }
 
+    /**
+     * @return int
+     */
     public function isAllowed()
     {
         return $this->status;
     }
 
+    /**
+     * @return bool
+     */
     public function allow()
     {
         $this->status = self::STATUS_ALLOW;
         return $this->save(false);
     }
 
+    /**
+     * @return bool
+     */
     public function disallow()
     {
         $this->status = self::STATUS_DISALLOW;

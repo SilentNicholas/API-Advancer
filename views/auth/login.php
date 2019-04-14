@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
         ]) ?>
 
+
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
@@ -51,7 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
         </div>
-
         <div class="col-md-2">
             <?= yii\authclient\widgets\AuthChoice::widget([
                 'baseAuthUrl' => ['site/auth'],

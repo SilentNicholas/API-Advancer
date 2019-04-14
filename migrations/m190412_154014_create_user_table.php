@@ -1,10 +1,11 @@
 <?php
 
 use yii\db\Migration;
+
 /**
- * Handles the creation of table `user`.
+ * Handles the creation of table `{{%user}}`.
  */
-class m190404_121441_create_user_table extends Migration
+class m190412_154014_create_user_table extends Migration
 {
     /**
      * @inheritdoc
@@ -12,12 +13,13 @@ class m190404_121441_create_user_table extends Migration
     public function up()
     {
         $this->createTable('user', [
-            'id' => $this->primaryKey(),
+            'id' =>$this->bigPrimaryKey(),
             'name'=>$this->string(),
             'email'=>$this->string()->defaultValue(null),
             'password'=>$this->string(),
             'isAdmin'=>$this->integer()->defaultValue(0),
-            'photo'=>$this->string()->defaultValue(null)
+            'photo'=>$this->string()->defaultValue(null),
+            'access_token'=>$this->string()
         ]);
     }
     /**

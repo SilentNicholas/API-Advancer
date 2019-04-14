@@ -5,20 +5,21 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%comment}}`.
  */
-class m190401_175235_create_comment_table extends Migration
+class m190412_154112_create_comment_table extends Migration
 {
+
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function safeUp()
+    public function up()
     {
         $this->createTable('comment', [
             'id' => $this->primaryKey(),
-            'text' => $this->string(),
-            'user_id' => $this->integer(),
-            'date' => $this->date(),
-            'article_id' => $this->integer(),
-            'status' => $this->integer()
+            'text'=>$this->string(),
+            'user_id'=>$this->bigInteger(),
+            'article_id'=>$this->integer(),
+            'status'=>$this->integer(),
+            'date'=>$this->date()
         ]);
         // creates index for column `user_id`
         $this->createIndex(
@@ -51,11 +52,10 @@ class m190401_175235_create_comment_table extends Migration
             'CASCADE'
         );
     }
-
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('comment');
     }

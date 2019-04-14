@@ -100,12 +100,13 @@ class ArticleController extends Controller
         ]);
     }
 
+
     /**
-     * Deletes an existing Article model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -114,6 +115,11 @@ class ArticleController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionSetImage($id)
     {
         $model = new ImageUpload;
@@ -128,6 +134,11 @@ class ArticleController extends Controller
         return $this->render('image', ['model'=>$model]);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionSetCategory($id)
     {
         $article = $this->findModel($id);
@@ -147,6 +158,12 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionSetTags($id)
     {
         $article = $this->findModel($id);

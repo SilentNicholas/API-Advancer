@@ -54,16 +54,20 @@ class LoginForm extends Model
         }
     }
 
+
     /**
-     * Logs in a user using the provided email and password.
-     * @return bool whether the user is logged in successfully
+     * @return Token|null
      */
-    public function login()
+    public function auth()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            $token = new Token();
+            $token->user_id = $this->getUser()->id;
+            $token->generateToken(time() + 3600 * 24);
+            return $token->save() ? $token : null;
+        } else {
+            return null;
         }
-        return false;
     }
 
     /**

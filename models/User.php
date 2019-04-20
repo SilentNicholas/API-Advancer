@@ -55,6 +55,7 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
             'password' => 'Password',
             'isAdmin' => 'Is Admin',
             'image' => 'Image',
+            //'access_token' => 'Access_token',
         ];
     }
 
@@ -82,7 +83,7 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        //return static::findOne(['access_token' => $token]);
     }
 
     /**
@@ -93,14 +94,19 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
        return $this->id;
     }
 
+    public function generateAuthKey()
+    {
+        $this->access_token = Yii::$app->security->generateRandomString();
+    }
+
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->access_token;
     }
 
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        return $this->getAuthKey() === $authKey;
     }
 
     /**
@@ -166,5 +172,4 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
             Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
         ];
     }
-
 }

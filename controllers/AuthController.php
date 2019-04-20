@@ -24,7 +24,7 @@ class AuthController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(Yii::$app->request->post()) && $model->auth()) {
             return $this->goBack();
         }
         return $this->render('login', [

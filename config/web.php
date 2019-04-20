@@ -12,10 +12,21 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'response' => [
+            'formatters' => [
+                'json' => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG,
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                ],
+            ],
+        ],
         'request' => [
+            'enableCsrfValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
+            'enableCsrfCookie' => false,
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'oCzVfCswxoR6hlYX37FQjYBeW_UOqzo9',
             'baseUrl' => ''
@@ -41,14 +52,14 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'enableSession' => true,
+            'enableSession' => false,
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-            'loginUrl' => null //['auth/login']
+            'enableAutoLogin' => false,
+            'loginUrl' => null //['site/login']
         ],
-        'errorHandler' => [
+        /*'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
+        ],*/
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
@@ -73,18 +84,19 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
-                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
-                    'except' => ['create', 'update'],
-                ],
+               '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/api'], 'except' => ['delete', 'create', 'update']],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/token']],
             ],
         ],
 
     ],
 
     'modules' => [
+        'api' => [
+            'basePath' => '@app/modules/api',
+            'class' => 'app\modules\api\Module',
+        ],
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ]

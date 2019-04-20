@@ -14,16 +14,5 @@ class UserController extends ActiveController
         'collectionEnvelope' => 'items',
     ];
 
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::className(), //включаем аутентификацию по токену
-            'except' => ['options','login'],
-        ];
-        return $behaviors;
-    }
+
 }

@@ -231,3 +231,32 @@ vendor/bin/codecept run functional,unit -- --coverage-html --coverage-xml
 ```
 
 You can see code coverage output under the `tests/_output` directory.
+
+  API
+-------
+
+Api application working according to REST API. If you registered in this application and want to use API you can
+authenticate with api:
+1. Write in your API client POST request
+
+```
+http:/blog.com/auth
+```
+1.1 Body in your request must be
+
+```
+{
+    "email": "example@net",
+    "password": "nameOfYourCat"
+}
+
+#when you got token save him for next steps.
+``` 
+
+2. Now you must send a GET request with the received Bearer token. Your request should be like the next
+
+```
+http://blog.com/profile?Authorization=Bearer...(YourLongToken)
+```
+
+3. Welcome!!!

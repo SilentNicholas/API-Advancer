@@ -55,7 +55,7 @@ $config = [
             'enableSession' => false,
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => false,
-            'loginUrl' => null //['site/login']
+            'loginUrl' => ['auth/login']
         ],
         /*'errorHandler' => [
             'errorAction' => 'site/error',
@@ -84,9 +84,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                'auth' => 'api/site/login',
+                'GET profile' => 'api/profile/index',
                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/api'], 'except' => ['delete', 'create', 'update']],
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/token']],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'post'],
             ],
         ],
 

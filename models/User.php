@@ -4,11 +4,13 @@ namespace app\models;
 
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\web\Linkable;
 use yii\web\Link;
 use yii\helpers\Url;
+use app\models\query\UserQuery;
 
 /**
  * This is the model class for table "user".
@@ -30,6 +32,16 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
     public static function tableName()
     {
         return 'user';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**
@@ -79,11 +91,31 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
     /**
      * @param string $token
      * @param null $type
-     * @return User|IdentityInterface|null
+     * @return array|ActiveRecord|IdentityInterface|null
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        //return static::findOne(['access_token' => $token]);
+        return static::find()
+            ->joinWith('tokens t')
+            ->andWhere(['t.token' => $token])
+            ->andWhere(['>', 't.expired_at', time()])
+            ->one();
+    }
+
+    /**
+     * @return UserQuery
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTokens()
+    {
+        return $this->hasMany(Token::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -92,21 +124,6 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
     public function getId()
     {
        return $this->id;
-    }
-
-    public function generateAuthKey()
-    {
-        $this->access_token = Yii::$app->security->generateRandomString();
-    }
-
-    public function getAuthKey()
-    {
-        return $this->access_token;
-    }
-
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
     }
 
     /**
@@ -170,6 +187,54 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
     {
         return [
             Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
+        ];
+    }
+
+    /**
+     * Returns a key that can be used to check the validity of a given identity ID.
+     *
+     * The key should be unique for each individual user, and should be persistent
+     * so that it can be used to check the validity of the user identity.
+     *
+     * The space of such keys should be big enough to defeat potential identity attacks.
+     *
+     * This is required if [[User::enableAutoLogin]] is enabled. The returned key will be stored on the
+     * client side as a cookie and will be used to authenticate user even if PHP session has been expired.
+     *
+     * Make sure to invalidate earlier issued authKeys when you implement force user logout, password change and
+     * other scenarios, that require forceful access revocation for old sessions.
+     *
+     * @return string a key that is used to check the validity of a given identity ID.
+     * @see validateAuthKey()
+     */
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+    }
+
+    /**
+     * Validates the given auth key.
+     *
+     * This is required if [[User::enableAutoLogin]] is enabled.
+     * @param string $authKey the given auth key
+     * @return bool whether the given auth key is valid.
+     * @see getAuthKey()
+     */
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
+    }
+
+    /**
+     * @return array|false
+     */
+    public function fields()
+    {
+        return [
+            'id' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'photo' => 'photo',
         ];
     }
 }

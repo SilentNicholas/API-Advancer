@@ -61,6 +61,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii2-authclient": "^2.1"
+        "yiisoft/yii2-authclient": "^2.1",
+      "ext-json": "*"
     }
 }

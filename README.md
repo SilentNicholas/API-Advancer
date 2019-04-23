@@ -235,7 +235,23 @@ You can see code coverage output under the `tests/_output` directory.
   API
 -------
 
-Api application working according to REST API. If you registered in this application and want to use API you can
+Api application working according to REST API. If you are not registered send a POST request to the address
+
+```
+http:/blog.com/signup
+```
+
+send next text in the request body
+
+```
+{
+	"name": "YourName",
+	"email": "your@mail.mat",
+	"password": "YourPassword"
+}
+```
+
+If you are already registered in this application and want to use API you can
 authenticate with api:
 1. Write in your API client POST request
 

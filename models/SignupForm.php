@@ -29,7 +29,6 @@ class SignupForm extends Model
     public function signup()
     {
         $user = new User;
-
         $user->attributes = $this->attributes;
         return $user->create();
     }

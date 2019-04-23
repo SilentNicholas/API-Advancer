@@ -34,15 +34,15 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
         return 'user';
     }
 
-    /**
+    /*/**
      * @inheritdoc
      */
-    public function behaviors()
+    /*public function behaviors()
     {
         return [
             TimestampBehavior::className(),
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}

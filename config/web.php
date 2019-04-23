@@ -86,6 +86,7 @@ $config = [
                 '' => 'site/index',
                 'auth' => 'api/site/login',
                 'GET profile' => 'api/profile/index',
+                'POST signup' => 'api/site/signup',
                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'post'],
             ],

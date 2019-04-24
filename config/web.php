@@ -52,9 +52,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'enableSession' => false,
+            'enableSession' => true,
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => false,
+            'enableAutoLogin' => true,
             'loginUrl' => ['auth/login']
         ],
         /*'errorHandler' => [
@@ -84,9 +84,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
-                'auth' => 'api/site/login',
+                'POST auth' => 'api/auth/login',
                 'GET profile' => 'api/profile/index',
-                'POST signup' => 'api/site/signup',
+                'POST signup' => 'api/auth/signup',
                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'post'],
             ],

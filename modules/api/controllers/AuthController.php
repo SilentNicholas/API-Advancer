@@ -4,11 +4,12 @@ namespace app\modules\api\controllers;
 
 use app\models\SignupForm;
 use Yii;
+use yii\db\Exception;
 use yii\rest\Controller;
 use app\modules\api\models\LoginForm;
 use yii\web\Response;
 
-class SiteController extends Controller
+class AuthController extends Controller
 {
     /**
      * @return string
@@ -33,8 +34,11 @@ class SiteController extends Controller
         }
     }
 
+
     /**
-     * @return string|Response
+     * @return array
+     * @throws Exception
+     * @throws \yii\base\Exception
      */
     public function actionSignup()
     {
@@ -42,10 +46,16 @@ class SiteController extends Controller
         if(Yii::$app->request->isPost){
             $model->load(Yii::$app->request->bodyParams, '');
             if($model->signup()){
-                return $model;
+                return [
+                    'name' => $model->name,
+                    'email' => $model->email,
+                ];
+            }else{
+                throw new Exception('User already exist');
             }
+        }else{
+            throw new Exception('Invalid data');
         }
-        return $model;
     }
 
     /**
@@ -58,4 +68,5 @@ class SiteController extends Controller
             'signup' => ['post']
         ];
     }
+
 }

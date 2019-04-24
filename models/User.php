@@ -141,7 +141,16 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
      */
     public function validatePassword($password)
     {
-       return ($this->password === $password) ? true : false;
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    /**
+     * @param $password
+     * @throws \yii\base\Exception
+     */
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 
 class SignupForm extends Model
@@ -19,17 +20,22 @@ class SignupForm extends Model
             [['name', 'email', 'password'], 'required'],
             [['name'], 'string'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => 'app\models\User', 'targetAttribute'=>'email']
+            [['email'], 'unique', 'targetClass' => User::className(), 'targetAttribute'=>'email']
         ];
     }
 
+
     /**
      * @return bool
+     * @throws \yii\base\Exception
      */
     public function signup()
     {
-        $user = new User;
-        $user->attributes = $this->attributes;
-        return $user->create();
+        if($this->validate()) {
+            $user = new User;
+            $user->attributes = $this->attributes;
+            $user->setPassword($user->attributes['password']);
+            return $user->create();
+        }
     }
 }

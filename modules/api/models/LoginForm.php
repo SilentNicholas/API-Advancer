@@ -4,6 +4,7 @@ namespace app\modules\api\models;
 
 use app\models\Token;
 use app\models\User;
+use yii\base\Exception;
 use yii\base\Model;
 
 /**
@@ -11,10 +12,10 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
+    const EXPIRED_TIME = 86400;
     public $email;
     public $password;
-
-    private $_user;
+    private $user;
 
     /**
      * @inheritdoc
@@ -48,18 +49,22 @@ class LoginForm extends Model
 
 
     /**
-     * @return Token|null
-     * @throws \yii\base\Exception
+     * @return Token
+     * @throws Exception
      */
     public function auth()
     {
         if ($this->validate()) {
             $token = new Token();
             $token->user_id = $this->getUser()->id;
-            $token->generateToken(time() + 3600 * 24);
-            return $token->save() ? $token : null;
+            $token->generateToken(time() + self::EXPIRED_TIME);
+            if($token->save()) {
+                return $token;
+            }else{
+                throw new Exception('Cannot save your token');
+            }
         } else {
-            return null;
+            throw new Exception('Invalid data in your request');
         }
     }
 
@@ -70,10 +75,10 @@ class LoginForm extends Model
      */
     protected function getUser()
     {
-        if ($this->_user === null) {
-            $this->_user = User::findByEmail($this->email);
+        if ($this->user === null) {
+            $this->user = User::findByEmail($this->email);
         }
 
-        return $this->_user;
+        return $this->user;
     }
 }

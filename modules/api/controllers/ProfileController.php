@@ -80,4 +80,5 @@ class ProfileController extends Controller
     {
         return User::findOne(Yii::$app->user->id);
     }
+
 }

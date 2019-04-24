@@ -32,8 +32,6 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 
-# application config
 /config
 
-#my job
 /web/test.php

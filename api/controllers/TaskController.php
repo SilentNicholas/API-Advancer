@@ -4,6 +4,7 @@
 namespace api\controllers;
 
 use common\rbac\Rbac;
+
 use Yii;
 use common\models\Task;
 use yii\filters\AccessControl;
@@ -53,6 +54,7 @@ class TaskController extends ActiveController
         return $behaviors;
     }
 
+
     /**
      * @return Task
      * @throws ServerErrorHttpException
@@ -61,7 +63,6 @@ class TaskController extends ActiveController
     {
         $model = new Task();
         $model->user_id = Yii::$app->user->id;
-
         $model->load(Yii::$app->request->bodyParams, '');
         if ($model->save()) {
             $response = Yii::$app->getResponse();
@@ -71,7 +72,6 @@ class TaskController extends ActiveController
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         }
-
         return $model;
     }
 

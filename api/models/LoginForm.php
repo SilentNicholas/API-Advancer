@@ -5,7 +5,7 @@ namespace api\models;
 use common\models\Token;
 use common\models\User;
 use yii\base\Model;
-use yii\db\Exception;
+use yii\base\Exception;
 
 /**
  * Login form
@@ -68,7 +68,7 @@ class LoginForm extends Model
             $token->user_id = $this->getUser()->id;
             $token->generateToken(time() + 3600 * 24);
             if ($token->save()) {
-                 return $token;
+                return $token;
             } else {
                 throw new Exception('Data is not saved');
             }

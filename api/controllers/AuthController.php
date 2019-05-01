@@ -6,6 +6,7 @@ use Yii;
 use yii\rest\Controller;
 use api\models\LoginForm;
 use api\models\SignupForm;
+use yii\base\Exception;
 
 class AuthController extends Controller
 {
@@ -17,34 +18,46 @@ class AuthController extends Controller
         return 'api';
     }
 
+
     /**
-     * @return LoginForm|\common\models\Token
-     * @throws \yii\db\Exception
+     * login user
+     * @throws Exception
      */
     public function actionLogin()
     {
         $model = new LoginForm();
         $model->load(Yii::$app->request->bodyParams, '');
-        if ($token = $model->auth()) {
-            return $token;
-        } else {
-            return $model;
+        $token = $model->auth();
+        try {
+            if (!$token) {
+                throw new Exception('You can not get authorization token');
+            } else {
+                return $token;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 
 
     /**
-     * @return SignupForm|\common\models\User
-     * @throws \yii\db\Exception
+     * signup user
+     * @throws Exception
      */
     public function actionSignup()
     {
+
         $model = new SignupForm();
         $model->load(Yii::$app->request->bodyParams, '');
-        if ($user = $model->signup()) {
-            return $user;
-        } else {
-            return $model;
+        $user = $model->signup();
+        try {
+            if (!$user) {
+                throw new Exception('You can not signup now');
+            } else {
+                return $user;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 

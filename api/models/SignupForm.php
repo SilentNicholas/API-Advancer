@@ -3,7 +3,7 @@ namespace api\models;
 
 use yii\base\Model;
 use common\models\User;
-use yii\db\Exception;
+use yii\base\Exception;
 
 /**
  * Signup form

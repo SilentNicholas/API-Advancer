@@ -5,7 +5,7 @@ namespace api\models;
 use common\models\Token;
 use common\models\User;
 use yii\base\Model;
-use yii\base\Exception;
+use api\Exception\MyException;
 
 /**
  * Login form
@@ -59,7 +59,7 @@ class LoginForm extends Model
 
     /**
      * @return Token
-     * @throws Exception
+     * @throws MyException
      */
     public function auth()
     {
@@ -70,10 +70,10 @@ class LoginForm extends Model
             if ($token->save()) {
                 return $token;
             } else {
-                throw new Exception('Data is not saved');
+                throw new MyException('Data is not saved');
             }
         } else {
-            throw new Exception('Your data is not valid');
+            throw new MyException('Your data is not valid');
         }
     }
 

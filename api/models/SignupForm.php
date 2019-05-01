@@ -3,7 +3,7 @@ namespace api\models;
 
 use yii\base\Model;
 use common\models\User;
-use yii\base\Exception;
+use api\Exception\MyException;
 
 /**
  * Signup form
@@ -46,14 +46,15 @@ class SignupForm extends Model
         ];
     }
 
+
     /**
      * @return User
-     * @throws Exception
+     * @throws MyException
      */
     public function signup()
     {
         if (!$this->validate()) {
-            throw new Exception('Entered data is not valid');
+            throw new MyException('Entered data is not valid');
         }
 
         $user = new User();
@@ -66,7 +67,7 @@ class SignupForm extends Model
         if ($user->save()) {
             return $user;
         } else {
-            throw new Exception('Your data is not saved');
+            throw new MyException('Your data is not saved');
         }
     }
 }
